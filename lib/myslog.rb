@@ -39,12 +39,11 @@ class MySlog
         record << lines.shift  # query time
       end
 
-      record << lines.shift  # user@host
-      record << lines.shift  # query time
-
+      sql = []
       while (line = lines.shift) != nil && !line.start_with?("#")
-        record << line
+        sql << line.strip
       end
+      record << sql.join(" ")
 
       records << record
     end

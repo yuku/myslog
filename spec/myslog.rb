@@ -73,22 +73,22 @@ use webtie;
       results = @myslog.divide(@lines)
 
       record = results[0]
-      record.size.should == 12
+      record.size.should == 3
       record[0].should ==
           "# User@Host: gimp[drool] @ algernon.retards.org [10.10.10.7]"
 
       record = results[1]
-      record.size.should == 4
+      record.size.should == 3
       record[0].should ==
           "# User@Host: gimp[drool] @ algernon.retards.org [10.10.10.7]"
 
       record = results[2]
-      record.size.should == 9
+      record.size.should == 4
       record[0].should ==
           "# Time: 010626 10:44:50"
 
       record = results[3]
-      record.size.should == 11
+      record.size.should == 4
       record[0].should ==
           "# Time: 010626 10:44:51"
     end
@@ -121,7 +121,7 @@ use webtie;
           @lock_time = 0.000097
           @rows_sent = 1
           @rows_examined = 0
-          @sql = "SET timestamp=1317619058;\nSELECT * FROM life;"
+          @sql = "SET timestamp=1317619058; SELECT * FROM life;"
           @lines = [
             "# Time: #{@date.strftime("%y%m%d %H:%M:%S")}",
             "# User@Host: #{@user} @ #{@host} [#{@host_ip}]",
