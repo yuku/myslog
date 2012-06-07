@@ -10,6 +10,85 @@ describe "MySlog" do
   describe "#parse" do
   end
 
+  describe "#divide" do
+    before :all do
+      @log = <<-EOF
+# User@Host: gimp[drool] @ algernon.retards.org [10.10.10.7]
+# Time: 14  Lock_time: 0  Rows_sent: 127  Rows_examined: 87189
+
+        select retard_user.id, cname.first,cname.last
+        from retard_user,contact,cname,helmet
+        where cname.id = contact.name_id
+        and contact.id = retard_user.contact_id
+        and retard_user.helmet_id = helmet.id
+        and helmet.brand_id = 9
+        and helmet.id = 143
+        group by retard_user.id
+        order by cname.last;
+# User@Host: gimp[drool] @ algernon.retards.org [10.10.10.7]
+# Time: 0  Lock_time: 0  Rows_sent: 2  Rows_examined: 1
+
+        select workbook_code from workbook_defs where brand_id=9;
+# Time: 010626 10:44:50
+# User@Host: staff[staff] @ algernon.retards.org [10.10.10.7]
+# Time: 0  Lock_time: 0  Rows_sent: 3  Rows_examined: 1
+use lead_generator;
+
+        SELECT answer_id, answer_text
+        FROM pl_answers
+        WHERE poll_id = 4
+    ;
+# Time: 010626 10:44:51
+# User@Host: gimp[drool] @ algernon.retards.org [10.10.10.7]
+# Time: 0  Lock_time: 0  Rows_sent: 1  Rows_examined: 1
+use webtie;
+
+    select count(tm.id)
+      from text_message tm, tm_status tms
+      where tm.tm_status_id = tms.id and
+            tm.to_id = 21259 and
+            tm.to_group = 'retard_user' and
+            tms.description = 'new';
+      EOF
+    end
+
+    before :each do
+      @lines = @log.split("\n").map {|line| line.chomp}
+    end
+
+    it "should return Array of Array" do
+      results = @myslog.send(:divide, @lines)
+      results.should be_an_instance_of Array
+      results.each do |result|
+        results.should be_an_instance_of Array
+      end
+    end
+
+    it "should devide lines in set of records" do
+      results = @myslog.send(:divide, @lines)
+
+      record = results[0]
+      record.size.should == 12
+      record[0].should ==
+          "# User@Host: gimp[drool] @ algernon.retards.org [10.10.10.7]"
+
+      record = results[1]
+      record.size.should == 4
+      record[0].should ==
+          "# User@Host: gimp[drool] @ algernon.retards.org [10.10.10.7]"
+
+      record = results[2]
+      record.size.should == 9
+      record[0].should ==
+          "# Time: 010626 10:44:50"
+
+      record = results[3]
+      record.size.should == 11
+      record[0].should ==
+          "# Time: 010626 10:44:51"
+    end
+  end
+
   describe "#parse_record" do
     it "should return an instance of Hash having specific keys" do
       lines = [
