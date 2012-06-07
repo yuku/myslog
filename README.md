@@ -17,10 +17,10 @@ Usage
 myslog = MySlog.new
 
 f = open("mysql-slow-query.log")
-lines = f.read.split("\n")
+text = f.read
 f.close
 
-logs = myslog.parse(lines)
+logs = myslog.parse(text)
 ```
 
 `logs` is Array of Hash
@@ -28,7 +28,7 @@ logs = myslog.parse(lines)
 ```ruby
 log = logs.first
 
-log[:date]
+log[:time]
 log[:user]
 log[:host]
 log[:host_ip]
