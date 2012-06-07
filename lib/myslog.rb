@@ -16,4 +16,11 @@
 # limitations under the License.
 #
 class MySlog
+  def parse(lines)
+  end
+
+  protected
+
+  def parse_record(lines)
+  end
 end
