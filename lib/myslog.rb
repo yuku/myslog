@@ -15,6 +15,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+require "time"
+
 class MySlog
   def parse(lines)
   end
@@ -22,5 +24,32 @@ class MySlog
   protected
 
   def parse_record(lines)
+    response = {}
+
+    line = lines.shift
+    if line.start_with? "# Time:"
+      date = line[8..-1].strip
+      response[:date] = Time.parse(date)
+
+      line = lines.shift
+    else
+      response[:date] = nil
+    end
+
+    elems = line.split(" ")
+    response[:user]          = elems[2].strip
+    response[:host]          = elems[4].strip
+    response[:host_ip]       = elems[5].strip[1...-1]
+
+    line = lines.shift
+    elems = line.split(" ")
+    response[:query_time]    = elems[2].to_f
+    response[:lock_time]     = elems[4].to_f
+    response[:rows_sent]     = elems[6].to_i
+    response[:rows_examined] = elems[8].to_i
+
+    response[:sql] = lines.map{|line| line.strip}.join("\n")
+
+    response
   end
 end
