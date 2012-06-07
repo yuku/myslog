@@ -46,12 +46,11 @@ use webtie;
 
   before :each do
     @myslog = MySlog.new
-    @lines = @log.split("\n").map {|line| line.chomp}
   end
 
   describe "#parse" do
     it "should return Array of Hash" do
-      results = @myslog.parse(@lines)
+      results = @myslog.parse(@log)
       results.should be_an_instance_of Array
       results.each do |result|
         results.should be_an_instance_of Array
@@ -60,6 +59,9 @@ use webtie;
   end
 
   describe "#divide" do
+    before :each do
+      @lines = @log.split("\n").map {|line| line.chomp}
+    end
 
     it "should return Array of Array" do
       results = @myslog.divide(@lines)

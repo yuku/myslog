@@ -18,8 +18,8 @@
 require "time"
 
 class MySlog
-  def parse(lines)
-    divide(lines).map {|record| parse_record(record) }
+  def parse(text)
+    divide(text.split("\n")).map {|r| parse_record(r) }
   end
 
   def divide(lines)
@@ -51,32 +51,32 @@ class MySlog
     records
   end
 
-  def parse_record(lines)
+  def parse_record(records)
     response = {}
 
-    line = lines.shift
-    if line.start_with? "# Time:"
-      date = line[8..-1].strip
+    record = records.shift
+    if record.start_with? "# Time:"
+      date = record[8..-1].strip
       response[:date] = Time.parse(date)
 
-      line = lines.shift
+      record = records.shift
     else
       response[:date] = nil
     end
 
-    elems = line.split(" ")
+    elems = record.split(" ")
     response[:user]          = elems[2].strip
     response[:host]          = elems[4].strip
     response[:host_ip]       = elems[5].strip[1...-1]
 
-    line = lines.shift
-    elems = line.split(" ")
+    record = records.shift
+    elems = record.split(" ")
     response[:query_time]    = elems[2].to_f
     response[:lock_time]     = elems[4].to_f
     response[:rows_sent]     = elems[6].to_i
     response[:rows_examined] = elems[8].to_i
 
-    response[:sql] = lines.map{|line| line.strip}.join("\n")
+    response[:sql] = records.shift
 
     response
   end
