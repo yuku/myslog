@@ -16,9 +16,13 @@ Usage
 ```ruby
 myslog = MySlog.new
 
-f = open("mysql-slow-query.log")
-text = f.read
-f.close
+text = <<-EOF
+# Time: 111003 14:17:38
+# User@Host: root[root] @ localhost []
+# Query_time: 0.000270  Lock_time: 0.000097 Rows_sent: 1  Rows_examined: 0
+SET timestamp=1317619058;
+SELECT * FROM life;
+EOF
 
 logs = myslog.parse(text)
 ```
@@ -28,13 +32,13 @@ logs = myslog.parse(text)
 ```ruby
 log = logs.first
 
-log[:time]
-log[:user]
-log[:host]
-log[:host_ip]
-log[:query_time]
-log[:lock_time]
-log[:rows_sent]
-log[:rows_examined]
-log[:sql]
+log[:time]          #=> Time
+log[:user]          #=> "root[root]"
+log[:host]          #=> "localhost"
+log[:host_ip]       #=> ""
+log[:query_time]    #=> 0.000270
+log[:lock_time]     #=> 0.000097
+log[:rows_sent]     #=> 1
+log[:rows_examined] #=> 0
+log[:sql]           #=> "SET timestamp=1317619058; SELECT * FROM life;"
 ```
