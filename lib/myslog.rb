@@ -19,6 +19,7 @@ require "time"
 
 class MySlog
   def parse(lines)
+    divide(lines).map {|record| parse_record(record) }
   end
 
   protected
