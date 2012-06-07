@@ -62,7 +62,7 @@ use webtie;
   describe "#divide" do
 
     it "should return Array of Array" do
-      results = @myslog.send(:divide, @lines)
+      results = @myslog.divide(@lines)
       results.should be_an_instance_of Array
       results.each do |result|
         results.should be_an_instance_of Array
@@ -70,7 +70,7 @@ use webtie;
     end
 
     it "should devide lines in set of records" do
-      results = @myslog.send(:divide, @lines)
+      results = @myslog.divide(@lines)
 
       record = results[0]
       record.size.should == 12
@@ -102,7 +102,7 @@ use webtie;
         "# Time: 0  Lock_time: 0  Rows_sent: 1  Rows_examined: 1",
         "use webtie;"
       ]
-      response = @myslog.send(:parse_record, lines)
+      response = @myslog.parse_record(lines)
 
       response.should be_an_instance_of Hash
       %w[
@@ -128,7 +128,7 @@ use webtie;
             "# Query_time: #{@query_time}  Lock_time: #{@lock_time}  Rows_sent: #{@rows_sent}  Rows_examined: #{@rows_examined}",
             @sql
           ]
-          @response = @myslog.send(:parse_record, @lines)
+          @response = @myslog.parse_record(@lines)
         end
 
         it "should have expected values" do
@@ -161,7 +161,7 @@ use webtie;
             "# Query_time: #{@query_time}  Lock_time: #{@lock_time}  Rows_sent: #{@rows_sent}  Rows_examined: #{@rows_examined}",
             @sql
           ]
-          @response = @myslog.send(:parse_record, @lines)
+          @response = @myslog.parse_record(@lines)
         end
 
         it "should have expected values" do

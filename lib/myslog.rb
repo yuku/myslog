@@ -22,8 +22,6 @@ class MySlog
     divide(lines).map {|record| parse_record(record) }
   end
 
-  protected
-
   def divide(lines)
     records = []
 
