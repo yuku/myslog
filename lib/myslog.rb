@@ -23,6 +23,36 @@ class MySlog
 
   protected
 
+  def divide(lines)
+    records = []
+
+    line = lines.shift
+
+    while line
+      record = []
+
+      if line.start_with? "# Time:"
+        record << line
+        record << lines.shift  # user@host
+        record << lines.shift  # query time
+      else
+        record << line         # user@host
+        record << lines.shift  # query time
+      end
+
+      record << lines.shift  # user@host
+      record << lines.shift  # query time
+
+      while (line = lines.shift) != nil && !line.start_with?("#")
+        record << line
+      end
+
+      records << record
+    end
+
+    records
+  end
+
   def parse_record(lines)
     response = {}
 
