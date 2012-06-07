@@ -24,21 +24,21 @@ SET timestamp=1317619058;
 SELECT * FROM life;
 EOF
 
-logs = myslog.parse(text)
+records = mysrecord.parse(text)
 ```
 
-`logs` is Array of Hash
+`records` is Array of Hash
 
 ```ruby
-log = logs.first
+record = records.first
 
-log[:time]          #=> Time
-log[:user]          #=> "root[root]"
-log[:host]          #=> "localhost"
-log[:host_ip]       #=> ""
-log[:query_time]    #=> 0.000270
-log[:lock_time]     #=> 0.000097
-log[:rows_sent]     #=> 1
-log[:rows_examined] #=> 0
-log[:sql]           #=> "SET timestamp=1317619058; SELECT * FROM life;"
+record[:time]          #=> Time
+record[:user]          #=> "root[root]"
+record[:host]          #=> "localhost"
+record[:host_ip]       #=> ""
+record[:query_time]    #=> 0.000270
+record[:lock_time]     #=> 0.000097
+record[:rows_sent]     #=> 1
+record[:rows_examined] #=> 0
+record[:sql]           #=> "SET timestamp=1317619058; SELECT * FROM life;"
 ```
