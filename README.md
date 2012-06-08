@@ -32,7 +32,7 @@ records = mysrecord.parse(text)
 ```ruby
 record = records.first
 
-record[:time]          #=> Time
+record[:time]          #=> Time(20111003 14:17:38)
 record[:user]          #=> "root[root]"
 record[:host]          #=> "localhost"
 record[:host_ip]       #=> ""
