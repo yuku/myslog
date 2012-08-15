@@ -64,7 +64,7 @@ class MySlog
       response[:date] = nil
     end
 
-    elems = record.split(" ")
+    elems = record.split(/( )+/)
     response[:user]          = elems[2].strip
     response[:host]          = elems[4].strip
     response[:host_ip]       = elems[5].strip[1...-1]
