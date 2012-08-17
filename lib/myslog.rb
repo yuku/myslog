@@ -66,8 +66,13 @@ class MySlog
 
     elems = record.split(" ")
     response[:user]          = elems[2].strip
-    response[:host]          = elems[4].strip
-    response[:host_ip]       = elems[5].strip[1...-1]
+    if elems[5] == nil
+      response[:host]        = nil
+      response[:host_ip]     = elems[4].strip[1...-1]
+    else
+      response[:host]        = elems[4].strip
+      response[:host_ip]     = elems[5].strip[1...-1]
+    end
 
     record = records.shift
     elems = record.split(" ")
