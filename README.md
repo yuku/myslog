@@ -24,7 +24,7 @@ SET timestamp=1317619058;
 SELECT * FROM life;
 EOF
 
-records = mysrecord.parse(text)
+records = myslog.parse(text)
 ```
 
 `records` is Array of Hash
