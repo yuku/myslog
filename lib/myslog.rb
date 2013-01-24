@@ -30,22 +30,15 @@ class MySlog
     while line
       record = []
 
-      if line.start_with? "# Time:"
-        record << line
-        record << lines.shift  # user@host
-        record << lines.shift  # thread schema
-        record << lines.shift  # query time
-        record << lines.shift  # bytes sent
-      else
-        record << line         # user@host
-        record << lines.shift  # thread schema
-        record << lines.shift  # query time
-        record << lines.shift  # bytes sent
+      while line != nil && line.start_with?("#")
+        record << line.strip
+        line = lines.shift
       end
 
       sql = []
-      while (line = lines.shift) != nil && !line.start_with?("#")
+      while line != nil && !line.start_with?("#")
         sql << line.strip
+        line = lines.shift
       end
       record << sql.join(" ")
 
@@ -58,50 +51,39 @@ class MySlog
   def parse_record(records)
     response = {}
 
-    record = records.shift
-    if record.start_with? "# Time:"
-      date = record[8..-1].strip
-      response[:date] = Time.parse(date)
+    while (record = records.shift) != nil
 
-      record = records.shift
-    else
-      response[:date] = nil
+      if record.start_with? "# Time:"
+        date = record[8..-1].strip
+        response[:date] = Time.parse(date)
+      elsif record.start_with? "# User@Host:"
+
+        elems = record.split(" ")
+        response[:user]      = elems[2].strip
+        if elems[5] == nil
+          response[:host]    = nil
+          response[:host_ip] = elems[4].strip[1...-1]
+        else
+          response[:host]    = elems[4].strip
+          response[:host_ip] = elems[5].strip[1...-1]
+        end
+      elsif record.start_with? "#"
+
+        # split with two space
+        elems = record.delete("#").strip().split("  ")
+        for elem in elems do
+          e = elem.split(":")
+          response.store(e[0], e[1].strip())
+        end
+      else
+        response[:sql] = record
+      end
+
     end
 
-    elems = record.split(" ")
-    response[:user]          = elems[2].strip
-    if elems[5] == nil
-      response[:host]        = nil
-      response[:host_ip]     = elems[4].strip[1...-1]
-    else
-      response[:host]        = elems[4].strip
-      response[:host_ip]     = elems[5].strip[1...-1]
+    if !response.has_key? :date
+       response[:date] = nil
     end
-
-    record = records.shift
-    elems = record.split(" ")
-    response[:thread_id]     = elems[2].to_f
-    response[:schema]        = elems[4].to_f
-    response[:last_errno]    = elems[6].to_f
-    response[:killed]        = elems[8].to_f
-
-    record = records.shift
-    elems = record.split(" ")
-    response[:query_time]    = elems[2].to_f
-    response[:lock_time]     = elems[4].to_f
-    response[:rows_sent]     = elems[6].to_f
-    response[:rows_examined] = elems[8].to_f
-    response[:rows_affected] = elems[10].to_f
-    response[:rows_read] = elems[12].to_f
-
-    record = records.shift
-    elems = record.split(" ")
-    response[:bytes_send]      = elems[2].to_f
-    response[:tmp_tables]      = elems[4].to_f
-    response[:tmp_disk_tables] = elems[6].to_f
-    response[:tmp_table_sizes] = elems[6].to_f
-
-    response[:sql] = records.shift
 
     response
   end
