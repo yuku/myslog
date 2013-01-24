@@ -33,10 +33,14 @@ class MySlog
       if line.start_with? "# Time:"
         record << line
         record << lines.shift  # user@host
+        record << lines.shift  # thread schema
         record << lines.shift  # query time
+        record << lines.shift  # bytes sent
       else
         record << line         # user@host
+        record << lines.shift  # thread schema
         record << lines.shift  # query time
+        record << lines.shift  # bytes sent
       end
 
       sql = []
@@ -76,10 +80,26 @@ class MySlog
 
     record = records.shift
     elems = record.split(" ")
+    response[:thread_id]     = elems[2].to_f
+    response[:schema]        = elems[4].to_f
+    response[:last_errno]    = elems[6].to_f
+    response[:killed]        = elems[8].to_f
+
+    record = records.shift
+    elems = record.split(" ")
     response[:query_time]    = elems[2].to_f
     response[:lock_time]     = elems[4].to_f
-    response[:rows_sent]     = elems[6].to_i
-    response[:rows_examined] = elems[8].to_i
+    response[:rows_sent]     = elems[6].to_f
+    response[:rows_examined] = elems[8].to_f
+    response[:rows_affected] = elems[10].to_f
+    response[:rows_read] = elems[12].to_f
+
+    record = records.shift
+    elems = record.split(" ")
+    response[:bytes_send]      = elems[2].to_f
+    response[:tmp_tables]      = elems[4].to_f
+    response[:tmp_disk_tables] = elems[6].to_f
+    response[:tmp_table_sizes] = elems[6].to_f
 
     response[:sql] = records.shift
 
