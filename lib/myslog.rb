@@ -53,10 +53,7 @@ class MySlog
 
     while (record = records.shift) != nil
 
-      if record.start_with? "# Time:"
-        date = record[8..-1].strip
-        response[:date] = Time.parse(date)
-      elsif record.start_with? "# User@Host:"
+      if record.start_with? "# User@Host:"
 
         elems = record.split(" ")
         response[:user]      = elems[2].strip
@@ -70,19 +67,25 @@ class MySlog
       elsif record.start_with? "#"
 
         # split with two space
-        elems = record.delete("#").strip().split("  ")
-        for elem in elems do
-          e = elem.split(":")
-          response.store(e[0], e[1].strip())
+        elems = record[2..-1].strip().split "  "
+        if elems.size == 1 && elems[0].start_with?("Time:")
+          response[:date] = Time.parse(record[8..-1].strip)
+        else
+          elems.each do |elem|
+            name, value = elem.split ":"
+            value.strip!
+            case value
+            when /^\d+$/
+              value = value.to_i
+            when /^\d+\.\d+(?:e[-+]\d+)?$/
+              value = value.to_f
+            end
+            response[name.downcase.to_sym] = value
+          end
         end
       else
         response[:sql] = record
       end
-
-    end
-
-    if !response.has_key? :date
-       response[:date] = nil
     end
 
     response

@@ -108,7 +108,7 @@ use webtie;
 
       response.should be_an_instance_of Hash
       %w[
-        date user host host_ip query_time lock_time rows_sent rows_examined sql
+        date user host host_ip time lock_time rows_sent rows_examined sql
       ].each { |k| response.should have_key k.to_sym}
     end
 
