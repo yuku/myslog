@@ -36,15 +36,33 @@ records = myslog.parse(text)
 `records` is Array of Hash
 
 ```ruby
-record = records.first
-
-record[:time]          #=> Time(20111003 14:17:38)
-record[:user]          #=> "root[root]"
-record[:host]          #=> "localhost"
-record[:host_ip]       #=> ""
-record[:query_time]    #=> 0.000270
-record[:lock_time]     #=> 0.000097
-record[:rows_sent]     #=> 1
-record[:rows_examined] #=> 0
-record[:sql]           #=> "SET timestamp=1317619058; SELECT * FROM life;"
+records[0]
+#=> {:time => 2011-10-03 14:17:38 +0900,
+#=>  :user => "root[root]",
+#=>  :host => "localhost",
+#=>  :host_ip => "",
+#=>  :query_time => 0.000270,
+#=>  :lock_time => 9.7e-05,
+#=>  :rows_sent => 1,
+#=>  :rows_examined => 0,
+#=>  :sql => "SET timestamp=1317619058; SELECT * FROM life;"}
+records[1]
+#=> {:user => "php[php]",
+#=>  :host => "",
+#=>  :host_ip => "192.168.10.235",
+#=>  :query_time => 0.031467,
+#=>  :lock_time => 0.000197,
+#=>  :rows_sent => 0,
+#=>  :rows_examined => 0,
+#=>  :rows_affected => 0,
+#=>  :rows_read => 2,
+#=>  :thread_id => 313,
+#=>  :schema => "ename_bbs_dx15",
+#=>  :last_errno => 0,
+#=>  :killed => 0,
+#=>  :bytes_sent => 1243,
+#=>  :tmp_tables => 0,
+#=>  :tmp_disk_tables => 0,
+#=>  :tmp_table_sizes => 0,
+#=>  :sql => "SET timestamp=1359008764; SELECT * FROM pre_common_session WHERE sid='vWWzwC' AND CONCAT_WS('.', ip1,ip2,ip3,ip4)='192.168.200.57';"}
 ```
