@@ -12,6 +12,6 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.name          = "myslog"
   gem.require_paths = ["lib"]
-  gem.version       = "0.0.8"
+  gem.version       = "0.0.9"
   gem.add_development_dependency "rspec"
 end
