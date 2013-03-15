@@ -66,7 +66,6 @@ class MySlog
         end
       elsif record.start_with? "#"
 
-        # split with two space
         elems = record[2..-1].strip().split " "
         if elems.size == 3 && elems[0] == "Time:"
           response[:date] = Time.parse(elems[1]+" "+elems[2])
