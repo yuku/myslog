@@ -66,21 +66,21 @@ class MySlog
         end
       elsif record.start_with? "#"
 
-        # split with two space
-        elems = record[2..-1].strip().split "  "
-        if elems.size == 1 && elems[0].start_with?("Time:")
-          response[:date] = Time.parse(record[8..-1].strip)
+        elems = record[2..-1].strip().split " "
+        if elems.size == 3 && elems[0] == "Time:"
+          response[:date] = Time.parse(elems[1]+" "+elems[2])
         else
-          elems.each do |elem|
-            name, value = elem.split ":"
-            value.strip!
-            case value
-            when /^\d+$/
-              value = value.to_i
-            when /^\d+\.\d+(?:e[-+]\d+)?$/
-              value = value.to_f
+          elems.each_with_index do |elem,i|
+            if elem.include?(":") && !elems[i+1].include?(":")
+              value = elems[i+1]
+              case value
+              when /^\d+$/
+                value = value.to_i
+              when /^\d+\.\d+(?:e[-+]\d+)?$/
+                value = value.to_f
+              end
+              response[elem[0...-1].downcase.to_sym] = value
             end
-            response[name.downcase.to_sym] = value
           end
         end
       else
