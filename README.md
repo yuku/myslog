@@ -37,7 +37,7 @@ records = myslog.parse(text)
 
 ```ruby
 records[0]
-#=> {:time => 2011-10-03 14:17:38 +0900,
+#=> {:date => 2011-10-03 14:17:38 +0900,
 #=>  :user => "root[root]",
 #=>  :host => "localhost",
 #=>  :host_ip => "",
