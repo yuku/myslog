@@ -115,7 +115,7 @@ use webtie;
     context "given full log" do
       describe "response" do
         before :each do
-          @date = Time.now
+          @date = Time.at(1317619058)
           @user = "root[root]"
           @host = "localhost"
           @host_ip = ""
@@ -167,7 +167,7 @@ use webtie;
         end
 
         it "should have expected values" do
-          @response[:date].should          == nil
+          @response[:date].to_s.should     == "2011-10-03 14:17:38 +0900"
           @response[:user].should          == @user
           @response[:host].should          == @host
           @response[:host_ip].should       == @host_ip
