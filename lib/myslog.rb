@@ -84,6 +84,14 @@ class MySlog
           end
         end
       else
+        if database = record.match(/^use ([^;]+)/)
+          response[:db] = database[1]
+        end
+
+        if timestamp = record.match(/SET timestamp=(\d+)/)
+          response[:date] = Time.at(timestamp[1].to_i)
+        end
+
         response[:sql] = record
       end
     end
