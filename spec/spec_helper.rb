@@ -1,4 +1,9 @@
-$LOAD_PATH.unshift File.expand_path("../", __FILE__)
-$LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
+require "coveralls"
+Coveralls.wear!
 
 require "myslog"
+
+RSpec.configure do |config|
+  config.color = true
+  config.run_all_when_everything_filtered = true
+end
