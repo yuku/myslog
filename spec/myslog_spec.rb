@@ -167,7 +167,7 @@ use webtie;
         end
 
         it "should have expected values" do
-          @response[:date].to_s.should     == "2011-10-03 14:17:38 +0900"
+          @response[:date].utc.to_s.should == "2011-10-03 05:17:38 UTC"
           @response[:user].should          == @user
           @response[:host].should          == @host
           @response[:host_ip].should       == @host_ip
