@@ -1,10 +1,10 @@
 PATH
   remote: .
   specs:
-    myslog (0.0.1)
+    myslog (0.0.10)
 
 GEM
-  remote: http://rubygems.org/
+  remote: https://rubygems.org/
   specs:
     diff-lcs (1.1.3)
     rake (10.4.2)
