@@ -1,6 +1,8 @@
 myslog
 ======
 
+[![Build Status](https://travis-ci.org/yuku-t/myslog.svg?branch=master)](https://travis-ci.org/yuku-t/myslog)
+
 MySQL slow query log parser
 
 Install
