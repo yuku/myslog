@@ -1,7 +1,7 @@
 myslog
 ======
 
-[![Build Status](https://travis-ci.org/yuku-t/myslog.svg?branch=master)](https://travis-ci.org/yuku-t/myslog) [![Coverage Status](https://coveralls.io/repos/yuku-t/myslog/badge.svg)](https://coveralls.io/r/yuku-t/myslog)
+[![Build Status](https://travis-ci.org/yuku-t/myslog.svg?branch=master)](https://travis-ci.org/yuku-t/myslog) [![Code Climate](https://codeclimate.com/github/yuku-t/myslog/badges/gpa.svg)](https://codeclimate.com/github/yuku-t/myslog) [![Coverage Status](https://coveralls.io/repos/yuku-t/myslog/badge.svg)](https://coveralls.io/r/yuku-t/myslog)
 
 MySQL slow query log parser
 
