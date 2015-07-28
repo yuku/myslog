@@ -1,17 +1,16 @@
-# -*- coding:utf-8 -*-
+Gem::Specification.new do |spec|
+  spec.name          = "myslog"
+  spec.version       = "0.0.10"
+  spec.authors       = ["taka84u9"]
+  spec.email         = ["taka84u9@gmail.com"]
+  spec.summary       = "MySQL slow query parser."
+  spec.description   = "MySQL slow query parser."
+  spec.homepage      = "https://github.com/taka84u9/myslog"
 
-Gem::Specification.new do |gem|
-  gem.authors       = ["taka84u9"]
-  gem.email         = ["taka84u9@gmail.com"]
-  gem.description   = %q{MySQL slow query parser.}
-  gem.summary       = %q{MySQL slow query parser.}
-  gem.homepage      = "https://github.com/taka84u9/myslog"
+  spec.files         = `git ls-files -z`.split("\x0")
+  spec.require_paths = ["lib"]
 
-  gem.files         = `git ls-files`.split($\)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.name          = "myslog"
-  gem.require_paths = ["lib"]
-  gem.version       = "0.0.10"
-  gem.add_development_dependency "rspec"
+  spec.add_development_dependency "bundler", "~> 1.7"
+  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "rspec"
 end
