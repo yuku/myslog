@@ -51,9 +51,9 @@ use webtie;
   describe "#parse" do
     it "should return Array of Hash" do
       results = @myslog.parse(@log)
-      results.should be_an_instance_of Array
+      expect(results).to be_an_instance_of Array
       results.each do |result|
-        results.should be_an_instance_of Array
+        expect(results).to be_an_instance_of Array
       end
     end
   end
@@ -65,9 +65,9 @@ use webtie;
 
     it "should return Array of Array" do
       results = @myslog.divide(@lines)
-      results.should be_an_instance_of Array
+      expect(results).to be_an_instance_of Array
       results.each do |result|
-        results.should be_an_instance_of Array
+        expect(results).to be_an_instance_of Array
       end
     end
 
@@ -75,24 +75,28 @@ use webtie;
       results = @myslog.divide(@lines)
 
       record = results[0]
-      record.size.should == 3
-      record[0].should ==
+      expect(record.size).to eq(3)
+      expect(record[0]).to eq(
           "# User@Host: gimp[drool] @ algernon.retards.org [10.10.10.7]"
+      )
 
       record = results[1]
-      record.size.should == 3
-      record[0].should ==
+      expect(record.size).to eq(3)
+      expect(record[0]).to eq(
           "# User@Host: gimp[drool] @ algernon.retards.org [10.10.10.7]"
+      )
 
       record = results[2]
-      record.size.should == 4
-      record[0].should ==
+      expect(record.size).to eq(4)
+      expect(record[0]).to eq(
           "# Time: 010626 10:44:50"
+      )
 
       record = results[3]
-      record.size.should == 4
-      record[0].should ==
+      expect(record.size).to eq(4)
+      expect(record[0]).to eq(
           "# Time: 010626 10:44:51"
+      )
     end
   end
 
@@ -106,10 +110,10 @@ use webtie;
       ]
       response = @myslog.parse_record(lines)
 
-      response.should be_an_instance_of Hash
+      expect(response).to be_an_instance_of Hash
       %w[
         date user host host_ip time lock_time rows_sent rows_examined sql
-      ].each { |k| response.should have_key k.to_sym}
+      ].each { |k| expect(response).to have_key k.to_sym}
     end
 
     context "given full log" do
@@ -134,15 +138,15 @@ use webtie;
         end
 
         it "should have expected values" do
-          @response[:date].to_i.should     == @date.to_i
-          @response[:user].should          == @user
-          @response[:host].should          == @host
-          @response[:host_ip].should       == @host_ip
-          @response[:query_time].should    == @query_time
-          @response[:lock_time].should     == @lock_time
-          @response[:rows_sent].should     == @rows_sent
-          @response[:rows_examined].should == @rows_examined
-          @response[:sql].should           == @sql.strip
+          expect(@response[:date].to_i).to     eq(@date.to_i)
+          expect(@response[:user]).to          eq(@user)
+          expect(@response[:host]).to          eq(@host)
+          expect(@response[:host_ip]).to       eq(@host_ip)
+          expect(@response[:query_time]).to    eq(@query_time)
+          expect(@response[:lock_time]).to     eq(@lock_time)
+          expect(@response[:rows_sent]).to     eq(@rows_sent)
+          expect(@response[:rows_examined]).to eq(@rows_examined)
+          expect(@response[:sql]).to           eq(@sql.strip)
         end
       end
     end
@@ -167,15 +171,15 @@ use webtie;
         end
 
         it "should have expected values" do
-          @response[:date].utc.to_s.should == "2011-10-03 05:17:38 UTC"
-          @response[:user].should          == @user
-          @response[:host].should          == @host
-          @response[:host_ip].should       == @host_ip
-          @response[:query_time].should    == @query_time
-          @response[:lock_time].should     == @lock_time
-          @response[:rows_sent].should     == @rows_sent
-          @response[:rows_examined].should == @rows_examined
-          @response[:sql].should           == @sql.strip
+          expect(@response[:date].utc.to_s).to eq("2011-10-03 05:17:38 UTC")
+          expect(@response[:user]).to          eq(@user)
+          expect(@response[:host]).to          eq(@host)
+          expect(@response[:host_ip]).to       eq(@host_ip)
+          expect(@response[:query_time]).to    eq(@query_time)
+          expect(@response[:lock_time]).to     eq(@lock_time)
+          expect(@response[:rows_sent]).to     eq(@rows_sent)
+          expect(@response[:rows_examined]).to eq(@rows_examined)
+          expect(@response[:sql]).to           eq(@sql.strip)
         end
       end
 
