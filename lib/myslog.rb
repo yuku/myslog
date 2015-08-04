@@ -19,7 +19,7 @@ class MySlog
       end
 
       sql = []
-      while line != nil && !line.start_with?("#")
+      while line != nil && !line.start_with?("# Time") && !line.start_with?("# User@Host") && !line.start_with?("# Query_time")
         sql << line.strip
         line = lines.shift
       end
