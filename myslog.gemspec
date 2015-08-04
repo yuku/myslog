@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.email         = ["taka84u9@gmail.com"]
   spec.summary       = "MySQL slow query parser."
   spec.description   = "MySQL slow query parser."
-  spec.homepage      = "https://github.com/taka84u9/myslog"
+  spec.homepage      = "https://github.com/yuku-t/myslog"
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.require_paths = ["lib"]
