@@ -41,6 +41,18 @@ use webtie;
           tm.to_id = 21259 and
           tm.to_group = 'retard_user' and
           tms.description = 'new';
+# Time: 2016-01-29T05:45:46.299805Z
+# User@Host: root[root] @ localhost []  Id:     2
+# Query_time: 1.000537  Lock_time: 0.000000 Rows_sent: 1  Rows_examined: 0
+SET timestamp=1455094924;
+select sleep(1);
+# Time: 2016-02-10T18:02:16.411200+09:00
+# User@Host: root[root] @ localhost []  Id:     2
+# Query_time: 2.000361  Lock_time: 0.000000 Rows_sent: 1  Rows_examined: 0
+use mysql;
+SET timestamp=1455094936;
+select
+sleep(2);
     EOF
   end
 
@@ -97,6 +109,19 @@ use webtie;
       expect(record[0]).to eq(
           "# Time: 010626 10:44:51"
       )
+
+      record = results[4]
+      expect(record.size).to eq(4)
+      expect(record[0]).to eq(
+          "# Time: 2016-01-29T05:45:46.299805Z"
+      )
+
+      record = results[5]
+      expect(record.size).to eq(4)
+      expect(record[0]).to eq(
+          "# Time: 2016-02-10T18:02:16.411200+09:00"
+      )
+      
     end
   end
 
@@ -130,6 +155,76 @@ use webtie;
           @sql = "SET timestamp=1317619058; SELECT * FROM life;"
           @lines = [
             "# Time: #{@date.strftime("%y%m%d %H:%M:%S")}",
+            "# User@Host: #{@user} @ #{@host} [#{@host_ip}]",
+            "# Query_time: #{@query_time}  Lock_time: #{@lock_time}  Rows_sent: #{@rows_sent}  Rows_examined: #{@rows_examined}",
+            @sql
+          ]
+          @response = @myslog.parse_record(@lines)
+        end
+
+        it "should have expected values" do
+          expect(@response[:date].to_i).to     eq(@date.to_i)
+          expect(@response[:user]).to          eq(@user)
+          expect(@response[:host]).to          eq(@host)
+          expect(@response[:host_ip]).to       eq(@host_ip)
+          expect(@response[:query_time]).to    eq(@query_time)
+          expect(@response[:lock_time]).to     eq(@lock_time)
+          expect(@response[:rows_sent]).to     eq(@rows_sent)
+          expect(@response[:rows_examined]).to eq(@rows_examined)
+          expect(@response[:sql]).to           eq(@sql.strip)
+        end
+      end
+    end
+
+    context "given full log by UTC in MySQL5.7 and later" do
+      describe "response" do
+        before :each do
+          @date = Time.at(1317619058)
+          @user = "root[root]"
+          @host = "localhost"
+          @host_ip = ""
+          @query_time = 0.000270
+          @lock_time = 0.000097
+          @rows_sent = 1
+          @rows_examined = 0
+          @sql = "SET timestamp=1317619058; SELECT * FROM life;"
+          @lines = [
+            "# Time: #{@date.strftime("%y-%m-%dT%H:%M:%S.%6N")}Z",
+            "# User@Host: #{@user} @ #{@host} [#{@host_ip}]",
+            "# Query_time: #{@query_time}  Lock_time: #{@lock_time}  Rows_sent: #{@rows_sent}  Rows_examined: #{@rows_examined}",
+            @sql
+          ]
+          @response = @myslog.parse_record(@lines)
+        end
+
+        it "should have expected values" do
+          expect(@response[:date].to_i).to     eq(@date.to_i)
+          expect(@response[:user]).to          eq(@user)
+          expect(@response[:host]).to          eq(@host)
+          expect(@response[:host_ip]).to       eq(@host_ip)
+          expect(@response[:query_time]).to    eq(@query_time)
+          expect(@response[:lock_time]).to     eq(@lock_time)
+          expect(@response[:rows_sent]).to     eq(@rows_sent)
+          expect(@response[:rows_examined]).to eq(@rows_examined)
+          expect(@response[:sql]).to           eq(@sql.strip)
+        end
+      end
+    end
+
+    context "given full log by JST in MySQL5.7 and later" do
+      describe "response" do
+        before :each do
+          @date = Time.at(1317619058)
+          @user = "root[root]"
+          @host = "localhost"
+          @host_ip = ""
+          @query_time = 0.000270
+          @lock_time = 0.000097
+          @rows_sent = 1
+          @rows_examined = 0
+          @sql = "SET timestamp=1317619058; SELECT * FROM life;"
+          @lines = [
+            "# Time: #{@date.strftime("%y-%m-%dT%H:%M:%S.%6N")}+09:00",
             "# User@Host: #{@user} @ #{@host} [#{@host_ip}]",
             "# Query_time: #{@query_time}  Lock_time: #{@lock_time}  Rows_sent: #{@rows_sent}  Rows_examined: #{@rows_examined}",
             @sql
