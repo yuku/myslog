@@ -1,7 +1,7 @@
 Gem::Specification.new do |spec|
   spec.name          = "myslog"
-  spec.version       = "0.1.0"
-  spec.authors       = ["taka84u9"]
+  spec.version       = "0.1.1"
+  spec.authors       = ["Yuku Takahashi"]
   spec.email         = ["taka84u9@gmail.com"]
   spec.summary       = "MySQL slow query parser."
   spec.description   = "MySQL slow query parser."
