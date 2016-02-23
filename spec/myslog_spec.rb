@@ -53,6 +53,12 @@ use mysql;
 SET timestamp=1455094936;
 select
 sleep(2);
+# Time: 160219 21:58:25
+# User@Host: root[root] @  [192.168.10.1]  Id:     1
+# Query_time: 0.000985  Lock_time: 0.000985 Rows_sent: 1  Rows_examined: 1
+use test_db;
+SET timestamp=1455886705;
+select * from test_table;
     EOF
   end
 
@@ -121,7 +127,13 @@ sleep(2);
       expect(record[0]).to eq(
           "# Time: 2016-02-10T18:02:16.411200+09:00"
       )
-      
+
+      record = results[6]
+      expect(record.size).to eq(4)
+      expect(record[0]).to eq(
+          "# Time: 160219 21:58:25"
+      )
+
     end
   end
 
@@ -277,7 +289,40 @@ sleep(2);
           expect(@response[:sql]).to           eq(@sql.strip)
         end
       end
-
     end
+
+    context "given unexist localhost and exist Id" do
+      describe "response" do
+        before :each do
+          @user = "root[root]"
+          @host = nil
+          @host_ip = "192.168.10.1"
+          @query_time = 0.000985
+          @lock_time = 0.000985
+          @rows_sent = 1
+          @rows_examined = 1
+          @sql = "SET timestamp=1455886705; SELECT * FROM test_table;"
+          @lines = [
+            "# User@Host: #{@user} @ #{@host} [#{@host_ip}]  Id:     1",
+            "# Query_time: #{@query_time}  Lock_time: #{@lock_time}  Rows_sent: #{@rows_sent}  Rows_examined: #{@rows_examined}",
+            @sql
+          ]
+          @response = @myslog.parse_record(@lines)
+        end
+
+        it "should have expected values" do
+          expect(@response[:date].utc.to_s).to eq("2016-02-19 12:58:25 UTC")
+          expect(@response[:user]).to          eq(@user)
+          expect(@response[:host]).to          eq(@host)
+          expect(@response[:host_ip]).to       eq(@host_ip)
+          expect(@response[:query_time]).to    eq(@query_time)
+          expect(@response[:lock_time]).to     eq(@lock_time)
+          expect(@response[:rows_sent]).to     eq(@rows_sent)
+          expect(@response[:rows_examined]).to eq(@rows_examined)
+          expect(@response[:sql]).to           eq(@sql.strip)
+        end
+      end
+    end
+
   end
 end

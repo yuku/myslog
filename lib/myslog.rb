@@ -38,15 +38,10 @@ class MySlog
 
       if record.start_with? "# User@Host:"
 
-        elems = record.split(" ")
-        response[:user]      = elems[2].strip
-        if elems[5] == nil
-          response[:host]    = nil
-          response[:host_ip] = elems[4].strip[1...-1]
-        else
-          response[:host]    = elems[4].strip
-          response[:host_ip] = elems[5].strip[1...-1]
-        end
+        elems = record.split(/ /, 7)
+        response[:user]    = elems[2].strip
+        response[:host]    = elems[4].empty? ? nil : elems[4].strip
+        response[:host_ip] = elems[5].strip[1...-1]
       elsif record.start_with? "#"
 
         elems = record[2..-1].strip().split " "
